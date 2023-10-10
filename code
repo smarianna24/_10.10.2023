@@ -1,0 +1,104 @@
+import java.util.Scanner;
+
+class Main {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt the user to enter an expression
+        System.out.print("Enter expression: ");
+        String input = scanner.nextLine();
+
+        try {
+            // Calculate and display the result of the expression
+            String result = calc(input);
+            System.out.println("Result: " + result);
+
+        } catch (IllegalArgumentException e) {
+            // Handle any errors that occur during calculation
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static String calc(String input) {
+        // Split the input expression into parts
+        String[] parts = input.split(" ");
+
+        if (parts.length != 3) {
+            // Verify the number of elements in the expression
+            throw new IllegalArgumentException("Invalid number of elements in the expression");
+        }
+
+        String operand1 = parts[0];
+        String operator = parts[1];
+        String operand2 = parts[2];
+
+        boolean isRoman1 = isValidRomanNumber(operand1);
+        boolean isRoman2 = isValidRomanNumber(operand2);
+
+        if (isRoman1 != isRoman2) {
+            // Check if the numbers are both Roman or Arabic
+            throw new IllegalArgumentException("Error: numbers should be either Roman or Arabic");
+        }
+
+        int num1 = isRoman1 ? RomanToDecimal(operand1) : Integer.parseInt(operand1);
+        int num2 = isRoman2 ? RomanToDecimal(operand2) : Integer.parseInt(operand2);
+
+        int result;
+
+        switch (operator) {
+            case "+":
+                // Perform addition
+                result = num1 + num2;
+                break;
+            case "-":
+                // Perform subtraction
+                result = num1 - num2;
+                break;
+            case "*":
+                // Perform multiplication
+                result = num1 * num2;
+                break;
+            case "/":
+                if (num2 == 0) {
+                    // Check for division by zero
+                    throw new IllegalArgumentException("Division by zero is not allowed");
+                }
+                // Perform division
+                result = num1 / num2;
+                break;
+            default:
+                // Handle invalid operators
+                throw new IllegalArgumentException("Invalid operator: " + operator);
+        }
+
+        if (isRoman1) {
+            if (result <= 0) {
+                // Check for zero or negative result for Roman numbers
+                throw new IllegalArgumentException("Result cannot be zero or negative for Roman numbers");
+            }
+            // Convert decimal result to Roman numeral
+            return DecimalToRoman(result);
+        } else {
+            // Convert integer result to string
+            return Integer.toString(result);
+        }
+    }
+
+    private static boolean isValidRomanNumber(String str) {
+        // Check if the string represents a valid Roman numeral
+        return str.matches("^[IVXLCDM]+$");
+    }
+
+    private static int RomanToDecimal(String roman) {
+        // Conversion logic from Roman to decimal goes here
+        int decimalValue = 0;
+        return decimalValue;
+    }
+
+    private static String DecimalToRoman(int decimal) {
+        // Conversion logic from decimal to Roman goes here
+        String romanValue = "";
+        return romanValue;
+    }
+}
